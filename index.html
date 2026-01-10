@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>GPU API Detector</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 1rem;
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid #aaa;
+            padding: 6px 10px;
+        }
+
+        table th,
+        table td {
+            width: 1%;
+            overflow-wrap: break-word;
+        }
+
+
+        .note {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            margin-bottom: .3rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>GPU API Detector in the Browser</h1>
+    <p class="note">Detects WebGL, WebGL2, and WebGPU support and compares several resource limits.</p>
+
+    <div id="gpu_table_container"></div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
