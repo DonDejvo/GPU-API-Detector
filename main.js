@@ -88,6 +88,10 @@ async function main() {
                 webgpu.ubo_per_shader_stage = d.maxUniformBuffersPerShaderStage;
                 webgpu.ubo_alignment = formatBytes(d.minUniformBufferOffsetAlignment);
 
+                webgpu.sbo_size = formatBytes(d.maxStorageBufferBindingSize);
+                webgpu.sbo_per_shader_stage = d.maxStorageBuffersPerShaderStage;
+                webgpu.sbo_alignment = formatBytes(d.minStorageBufferOffsetAlignment);
+
                 webgpu.render_targets = d.maxColorAttachments;
 
                 if (adapter.info) {
@@ -121,6 +125,14 @@ async function main() {
                 ['Uniform Buffers per Vertex', null, webgl2.ubo_per_vertex, webgpu.ubo_per_shader_stage, adapter?.limits?.maxUniformBuffersPerShaderStage],
                 ['Uniform Buffers per Fragment', null, webgl2.ubo_per_fragment, webgpu.ubo_per_shader_stage, adapter?.limits?.maxUniformBuffersPerShaderStage],
                 ['Uniform Buffer Alignment', null, webgl2.ubo_alignment, webgpu.ubo_alignment, formatBytes(adapter?.limits?.minUniformBufferOffsetAlignment)],
+            ]
+        },
+        {
+            title: "Storage Buffers", rows: [
+                ['Uniform Buffer Size', null, null, webgpu.sbo_size, formatBytes(adapter?.limits?.maxStorageBufferBindingSize)],
+                ['Uniform Buffers per Vertex', null, null, webgpu.sbo_per_shader_stage, adapter?.limits?.maxStorageBuffersPerShaderStage],
+                ['Uniform Buffers per Fragment', null, null, webgpu.sbo_per_shader_stage, adapter?.limits?.maxStorageBuffersPerShaderStage],
+                ['Uniform Buffer Alignment', null, null, webgpu.sbo_alignment, formatBytes(adapter?.limits?.minStorageBufferOffsetAlignment)],
             ]
         },
         {
