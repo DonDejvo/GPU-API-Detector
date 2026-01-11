@@ -96,7 +96,8 @@ async function main() {
 
                 if (adapter.info) {
                     webgpu.vendor = adapter.info.vendor;
-                    webgpu.renderer = adapter.info.description + " " + adapter.info.backend;
+                    webgpu.renderer = adapter.info.description + " " + adapter.info.device;
+                    webgpu.architecture = adapter.info.architecture;
                 }
             }
         } else webgpu.support = false;
@@ -144,6 +145,7 @@ async function main() {
             title: "Vendor / Renderer", rows: [
                 ['Vendor', webgl.vendor, webgl2.vendor, webgpu.vendor, webgpu.vendor],
                 ['Renderer', webgl.renderer, webgl2.renderer, webgpu.renderer, webgpu.renderer],
+                ['Architecture', null, null, webgpu.architecture, webgpu.architecture]
             ]
         }
     ];
