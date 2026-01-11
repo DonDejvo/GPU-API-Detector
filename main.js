@@ -63,8 +63,8 @@ async function main() {
                 webgl.vendor = gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL);
                 webgl.renderer = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL);
             } else {
-                webgl.vendor = gl2.getParameter(gl.VENDOR);
-                webgl.renderer = gl2.getParameter(gl.RENDERER);
+                webgl.vendor = gl.getParameter(gl.VENDOR);
+                webgl.renderer = gl.getParameter(gl.RENDERER);
             }
         } else webgl.support = false;
     }
