@@ -62,6 +62,9 @@ async function main() {
             if (dbg) {
                 webgl.vendor = gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL);
                 webgl.renderer = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL);
+            } else {
+                webgl.vendor = gl2.getParameter(gl.VENDOR);
+                webgl.renderer = gl2.getParameter(gl.RENDERER);
             }
         } else webgl.support = false;
     }
@@ -91,6 +94,9 @@ async function main() {
             if (dbg) {
                 webgl2.vendor = gl2.getParameter(dbg.UNMASKED_VENDOR_WEBGL);
                 webgl2.renderer = gl2.getParameter(dbg.UNMASKED_RENDERER_WEBGL);
+            } else {
+                webgl2.vendor = gl2.getParameter(gl2.VENDOR);
+                webgl2.renderer = gl2.getParameter(gl2.RENDERER);
             }
         } else webgl2.support = false;
     }
