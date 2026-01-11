@@ -31,7 +31,6 @@
             overflow-wrap: break-word;
         }
 
-
         .note {
             color: #666;
             margin-bottom: 1rem;
@@ -39,6 +38,13 @@
 
         h1 {
             margin-bottom: .3rem;
+        }
+
+        #exportButton {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -48,7 +54,9 @@
     <h1>GPU API Detector in the Browser</h1>
     <p class="note">Detects WebGL, WebGL2, and WebGPU support and compares several resource limits.</p>
 
-    <div id="gpu_table_container"></div>
+    <button id="export-btn">Export Table as HTML</button>
+
+    <div id="gpu-table-container"></div>
 
     <script src="main.js"></script>
 </body>

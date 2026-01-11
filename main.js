@@ -12,6 +12,35 @@ function formatBytes(b) {
     return (mb / 1024).toFixed(2) + ' GB';
 }
 
+function exportTableAsHTML(tableId, filename = 'gpu_limits.html') {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${filename}</title>
+<style>
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #999; padding: 0.5em; text-align: left; }
+</style>
+</head>
+<body>
+${table.outerHTML}
+</body>
+</html>
+    `;
+    
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 async function main() {
     let webgl = {}, webgl2 = {}, webgpu = {};
 
@@ -150,7 +179,7 @@ async function main() {
         }
     ];
 
-    let html = `<table><tr>
+    let html = `<table id="gpu-table"><tr>
 <th>Parameter</th>
 <th>WebGL</th>
 <th>WebGL2</th>
@@ -173,7 +202,11 @@ async function main() {
 
     html += `</table>`;
 
-    document.getElementById('gpu_table_container').innerHTML = html;
+    document.getElementById('gpu-table-container').innerHTML = html;
+
+    document.getElementById('export-btn').addEventListener('click', () => {
+        exportTableAsHTML('gpu-table', 'gpu_limits.html');
+    });
 
 }
 
