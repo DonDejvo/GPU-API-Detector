@@ -31,7 +31,7 @@ ${table.outerHTML}
 </body>
 </html>
     `;
-    
+
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -96,41 +96,55 @@ async function main() {
     }
 
     let adapter;
+    try {
+        if ('gpu' in navigator) {
+            adapter = await navigator.gpu.requestAdapter();
+            if (adapter) {
+                try {
+                    const device = await adapter.requestDevice();
+                    if (device) {
+                        webgpu.support = true;
+                        const d = device.limits;
 
-    if ('gpu' in navigator) {
-        adapter = await navigator.gpu.requestAdapter();
-        if (adapter) {
-            const device = await adapter.requestDevice();
-            if (device) {
-                webgpu.support = true;
-                const d = device.limits;
+                        webgpu.tex2d = d.maxTextureDimension2D;
+                        webgpu.tex3d = d.maxTextureDimension3D;
+                        webgpu.array_tex = d.maxTextureArrayLayers;
+                        webgpu.vert_tex_units = d.maxSampledTexturesPerShaderStage;
+                        webgpu.frag_tex_units = d.maxSampledTexturesPerShaderStage;
 
-                webgpu.tex2d = d.maxTextureDimension2D;
-                webgpu.tex3d = d.maxTextureDimension3D;
-                webgpu.array_tex = d.maxTextureArrayLayers;
-                webgpu.vert_tex_units = d.maxSampledTexturesPerShaderStage;
-                webgpu.frag_tex_units = d.maxSampledTexturesPerShaderStage;
+                        webgpu.attribs = d.maxVertexAttributes;
 
-                webgpu.attribs = d.maxVertexAttributes;
+                        webgpu.ubo_size = formatBytes(d.maxUniformBufferBindingSize);
+                        webgpu.ubo_per_shader_stage = d.maxUniformBuffersPerShaderStage;
+                        webgpu.ubo_alignment = formatBytes(d.minUniformBufferOffsetAlignment);
 
-                webgpu.ubo_size = formatBytes(d.maxUniformBufferBindingSize);
-                webgpu.ubo_per_shader_stage = d.maxUniformBuffersPerShaderStage;
-                webgpu.ubo_alignment = formatBytes(d.minUniformBufferOffsetAlignment);
+                        webgpu.sbo_size = formatBytes(d.maxStorageBufferBindingSize);
+                        webgpu.sbo_per_shader_stage = d.maxStorageBuffersPerShaderStage;
+                        webgpu.sbo_alignment = formatBytes(d.minStorageBufferOffsetAlignment);
 
-                webgpu.sbo_size = formatBytes(d.maxStorageBufferBindingSize);
-                webgpu.sbo_per_shader_stage = d.maxStorageBuffersPerShaderStage;
-                webgpu.sbo_alignment = formatBytes(d.minStorageBufferOffsetAlignment);
+                        webgpu.render_targets = d.maxColorAttachments;
 
-                webgpu.render_targets = d.maxColorAttachments;
-
-                if (adapter.info) {
-                    webgpu.vendor = adapter.info.vendor;
-                    webgpu.renderer = adapter.info.description + " " + adapter.info.device;
-                    webgpu.architecture = adapter.info.architecture;
+                        if (adapter.info) {
+                            webgpu.vendor = adapter.info.vendor;
+                            webgpu.renderer = adapter.info.description + " " + adapter.info.device;
+                            webgpu.architecture = adapter.info.architecture;
+                        }
+                    }
+                } catch (deviceError) {
+                    console.warn('WebGPU device request failed:', deviceError);
+                    webgpu.support = false;
                 }
+            } else {
+                webgpu.support = false;
             }
-        } else webgpu.support = false;
-    } else webgpu.support = false;
+        } else {
+            webgpu.support = false;
+        }
+    } catch (adapterError) {
+        console.warn('WebGPU adapter request failed:', adapterError);
+        webgpu.support = false;
+    }
+
 
     const sections = [
         {
